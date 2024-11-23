@@ -5,6 +5,7 @@ export default function AddFriend({ onAddFriend }) {
   const [image, setImage] = useState("https://i.pravatar.cc/48");
   function handleSubmit(e) {
     e.preventDefault();
+    if (!image || !name) return;
     const id = crypto.randomUUID();
     const newFriend = {
       id,

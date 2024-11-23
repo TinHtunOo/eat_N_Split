@@ -29,7 +29,6 @@ export default function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [newAddFriend, setNewFriend] = useState(friends);
   const [selectedFriend, setSelect] = useState(null);
-  const [showForm, setShowForm] = useState(false);
   function openAddFriend() {
     setIsOpen(true);
   }
@@ -40,7 +39,19 @@ export default function App() {
   }
 
   function handleSelect(friend) {
-    setSelect((curfri) => (curfri?.id === friend.id ? null : friend));
+    setSelect((cur) => (cur?.id === friend.id ? null : friend));
+    setIsOpen(false);
+  }
+
+  function handleSplit(value) {
+    setNewFriend((friends) =>
+      friends.map((friend) =>
+        friend.id === selectedFriend.id
+          ? { ...friend, balance: friend.balance + value }
+          : friend
+      )
+    );
+    setSelect(null);
   }
 
   return (
@@ -56,7 +67,9 @@ export default function App() {
           {!isOpen ? "AddFriend" : "Close"}
         </Button>
       </div>
-      {showForm && <SplitForm />}
+      {selectedFriend && (
+        <SplitForm selectedFriend={selectedFriend} onSplit={handleSplit} />
+      )}
     </div>
   );
 }
